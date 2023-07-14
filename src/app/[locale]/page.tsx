@@ -1,15 +1,29 @@
 "use client";
+
 import Image from "next/image";
-import styles from "@/layouts/styles/page.module.scss";
+import styles from "@/styles/page.module.scss";
 import { Button } from "@mui/material";
+import { useLocale, useTranslations } from "next-intl";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+import Link from "@/components/Link";
+import { useRouter } from "@/hooks/useRouter";
+import { PATH_AUTH } from "@/routes/paths";
 
 export default function Home() {
+  const locale = useLocale();
+  const t = useTranslations();
+  const router = useRouter();
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.tsx</code>
+          <br />
+          currentLang: {locale}
+          <br />
+          {t("demo.title")}
         </p>
         <div>
           <a
@@ -77,9 +91,11 @@ export default function Home() {
         </a>
       </div>
 
-      <Button type="button" color="primary">
+      <Button type="button" color="primary" onClick={() => router.push(PATH_AUTH.login)}>
         Test
       </Button>
+      <Link href={PATH_AUTH.login}>login</Link>
+      <LocaleSwitcher />
     </main>
   );
 }

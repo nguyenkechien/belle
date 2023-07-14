@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export default NextAuth({
+const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
   providers: [
@@ -19,12 +19,11 @@ export default NextAuth({
             password: credentials?.password,
           };
 
-          console.log({ payload });
+          const user = { id: "1", name: "Admin", email: "admin@admin.com", ...payload };
 
-          return null;
+          return user;
         } catch (error: any) {
           if (error instanceof AxiosError) throw Error(error?.message);
-
           throw Error(error);
         }
       },
@@ -37,3 +36,5 @@ export default NextAuth({
     },
   },
 });
+
+export { handler as GET, handler as POST };

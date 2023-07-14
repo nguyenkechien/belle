@@ -1,7 +1,9 @@
-import "@/layouts/styles/globals.scss";
+import "@/styles/globals.scss";
 import React from "react";
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/layouts/Theme/ThemeProvider";
+import { Provider } from "@/providers";
+import { cookies } from "next/headers";
+import { getSettings } from "@/utils/getSettings";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -9,10 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const cookieStore = cookies();
+  const settings = getSettings(cookieStore.getAll());
+
   return (
-    <html lang="en">
+    <html lang="en" dir="ltr">
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Provider settings={settings}>{children}</Provider>
       </body>
     </html>
   );
